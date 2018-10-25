@@ -32,10 +32,6 @@ namespace DemoGlobalExceptionHandling.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseHsts();
-            }
 
             loggerFactory.AddConsole();
 
