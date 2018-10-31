@@ -23,6 +23,8 @@ namespace DemoGlobalExceptionHandling.Api
             services.AddLogging();
             services.AddScoped<FakeData>();
 
+            //services.AddGlobalExceptionHandlerMiddleware();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -35,8 +37,8 @@ namespace DemoGlobalExceptionHandling.Api
 
             loggerFactory.AddConsole();
 
+            //app.UseGlobalExceptionHandlerMiddleware();
             app.UseGlobalExceptionHandler(loggerFactory);
-            //app.UseGlobalExceptionHandlerCustomMiddleware();
 
             app.UseMvc();
         }
