@@ -13,15 +13,17 @@ namespace DemoGlobalExceptionHandling.Api.Extensions
         {
             app.UseExceptionHandler(builder =>
             {
-                var logger = loggerFactory.CreateLogger("GlobalExceptionHandler");
-
                 builder.Run(async context =>
                 {
                     var exceptionHandlerFeature = context.Features.Get<IExceptionHandlerFeature>();
 
                     if (exceptionHandlerFeature != null)
                     {
+                        var logger = loggerFactory.CreateLogger("GlobalExceptionHandler");
                         logger.LogError($"Unexpected error: {exceptionHandlerFeature.Error}");
+
+                        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                        context.Response.ContentType = "application/json";
 
                         var json = new
                         {
@@ -29,9 +31,6 @@ namespace DemoGlobalExceptionHandling.Api.Extensions
                             Message = "An error occurred whilst processing your request",
                             Detailed = exceptionHandlerFeature.Error
                         };
-
-                        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                        context.Response.ContentType = "application/json";
 
                         await context.Response.WriteAsync(JsonConvert.SerializeObject(json));
                     }

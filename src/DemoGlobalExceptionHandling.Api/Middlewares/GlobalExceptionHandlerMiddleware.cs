@@ -31,16 +31,16 @@ namespace DemoGlobalExceptionHandling.Api.Middlewares
 
         private static Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+
             var json = new
             {
                 context.Response.StatusCode,
                 Message = "An error occurred whilst processing your request",
                 Detailed = exception
             };
-
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-
+            
             return context.Response.WriteAsync(JsonConvert.SerializeObject(json));
         }
     }
