@@ -1,4 +1,5 @@
 ﻿using DemoGlobalExceptionHandling.Api.Data;
+using DemoGlobalExceptionHandling.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DemoGlobalExceptionHandling.Api.Controllers
@@ -18,6 +19,12 @@ namespace DemoGlobalExceptionHandling.Api.Controllers
         public ActionResult<int> Get()
         {
             return _data.GetRandomNumber();
+        }
+
+        [HttpPost]
+        public ActionResult Post(Item item)
+        {
+            return Ok();
         }
     }
 }

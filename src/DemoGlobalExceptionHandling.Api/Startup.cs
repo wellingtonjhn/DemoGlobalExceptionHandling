@@ -2,6 +2,7 @@
 using DemoGlobalExceptionHandling.Api.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,7 +22,7 @@ namespace DemoGlobalExceptionHandling.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddLogging();
-            services.AddScoped<FakeData>();
+            services.AddSingleton<FakeData>();
 
             //services.AddGlobalExceptionHandlerMiddleware();
 
@@ -38,8 +39,8 @@ namespace DemoGlobalExceptionHandling.Api
             loggerFactory.AddConsole();
 
             //app.UseGlobalExceptionHandlerMiddleware();
-            app.UseGlobalExceptionHandler(loggerFactory);
-
+            //app.UseGlobalExceptionHandler(loggerFactory);
+            app.UseProblemDetailsExceptionHandler(loggerFactory);
             app.UseMvc();
         }
     }
