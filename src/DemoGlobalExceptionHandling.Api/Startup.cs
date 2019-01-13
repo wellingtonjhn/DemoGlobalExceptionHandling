@@ -2,7 +2,6 @@
 using DemoGlobalExceptionHandling.Api.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,8 +24,8 @@ namespace DemoGlobalExceptionHandling.Api
             services.AddSingleton<FakeData>();
 
             //services.AddGlobalExceptionHandlerMiddleware();
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.ConfigureProblemDetailsModelState();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)

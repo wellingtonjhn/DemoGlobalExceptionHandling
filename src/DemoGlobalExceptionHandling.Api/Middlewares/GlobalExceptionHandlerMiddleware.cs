@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DemoGlobalExceptionHandling.Api.Extensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace DemoGlobalExceptionHandling.Api.Middlewares
@@ -31,17 +31,19 @@ namespace DemoGlobalExceptionHandling.Api.Middlewares
 
         private static Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-
-            var json = new
-            {
-                context.Response.StatusCode,
-                Message = "An error occurred whilst processing your request",
-                Detailed = exception
-            };
+            const int statusCode = StatusCodes.Status500InternalServerError;
             
-            return context.Response.WriteAsync(JsonConvert.SerializeObject(json));
+            var json = JsonConvert.SerializeObject(new
+            {
+                statusCode,
+                message = "An error occurred whilst processing your request",
+                detailed = exception
+            }, SerializerSettings.JsonSerializerSettings);
+
+            context.Response.StatusCode = statusCode;
+            context.Response.ContentType = "application/json";
+
+            return context.Response.WriteAsync(json);
         }
     }
 }
