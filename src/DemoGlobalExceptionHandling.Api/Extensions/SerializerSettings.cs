@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace DemoGlobalExceptionHandling.Api.Extensions
 {
@@ -6,7 +7,8 @@ namespace DemoGlobalExceptionHandling.Api.Extensions
     {
         public static JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings
         {
-            NullValueHandling = NullValueHandling.Ignore
+            NullValueHandling = NullValueHandling.Ignore,
+            ContractResolver = new CamelCasePropertyNamesContractResolver()
         };
     }
 }

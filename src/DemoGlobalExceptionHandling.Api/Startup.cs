@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace DemoGlobalExceptionHandling.Api
 {
@@ -24,7 +26,14 @@ namespace DemoGlobalExceptionHandling.Api
             services.AddSingleton<FakeData>();
 
             //services.AddGlobalExceptionHandlerMiddleware();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc()
+                .AddJsonOptions(
+                    options =>
+                    {
+                        options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.ConfigureProblemDetailsModelState();
         }
 
